@@ -1,0 +1,21 @@
+package com.order.Client;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.order.Utils.ApiResponse;
+import com.order.dto.MenuItemResponse;
+import com.order.dto.RestaurentDTO;
+
+@FeignClient(url = "${restaurent.service.url}",value = "Restaurent-Client")
+public interface RestaurentClient {
+
+	 @GetMapping("/api/restaurent/{id}")
+	    RestaurentDTO getRestaurantById(@PathVariable Integer id);
+	 
+	 @GetMapping("/api/restaurent/{restaurentId}/menu")
+	 ApiResponse< List<MenuItemResponse>> getMenu(@PathVariable Integer restaurentId);
+}
