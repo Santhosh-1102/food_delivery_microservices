@@ -1,0 +1,7 @@
+package com.restaurent.service;
+
+import com.restaurent.dto.FoodItemDTO;
+
+public interface FoodItemService {
+	FoodItemDTO addFoodItemToRestaurent();
+}

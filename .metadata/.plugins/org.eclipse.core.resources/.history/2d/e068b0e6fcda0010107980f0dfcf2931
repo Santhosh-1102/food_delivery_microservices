@@ -1,0 +1,13 @@
+package com.restaurent.service;
+
+import java.util.List;
+
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.model.Restaurent;
+
+
+public interface RestaurentService {
+
+	Restaurent createRestaurent(RestaurentDTO request);
+	List<Restaurent> getAllRestaurents();
+}

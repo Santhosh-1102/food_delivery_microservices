@@ -1,0 +1,5 @@
+package com.restaurent.exception;
+
+class ResourceAlredyExistException extends Exception {
+
+}

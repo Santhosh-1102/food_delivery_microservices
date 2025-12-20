@@ -1,0 +1,66 @@
+package com.restaurent.service.implementation;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.FoodItemDTO;
+import com.restaurent.exception.ResourceAlredyExistException;
+import com.restaurent.exception.RestaurentException;
+import com.restaurent.model.FoodItem;
+import com.restaurent.model.Restaurent;
+import com.restaurent.repository.FoodItemRepo;
+import com.restaurent.repository.RestaurentRepo;
+import com.restaurent.service.FoodItemService;
+
+import lombok.RequiredArgsConstructor;
+@Service
+@RequiredArgsConstructor
+public class FoodItemImplementation implements FoodItemService{
+
+	private final FoodItemRepo foodItemRepo;
+	private final RestaurentRepo restaurentRepo;
+	
+	@Override
+	public FoodItemResponseDTO addFoodItemToRestaurent(
+	        Integer restaurentId, FoodItemDTO itemDTO) {
+
+	    Restaurent restaurent = restaurentRepo
+	            .findById(restaurentId)
+	            .orElseThrow(() ->
+	                new RestaurentException("Restaurant Id is not present in the DB")
+	            );
+
+	    if (foodItemRepo.existsByNameAndRestaurentId(
+	            itemDTO.getName(), restaurentId)) {
+
+	        throw new ResourceAlredyExistException(
+	                "Food item already exists in the restaurant"
+	        );
+	    }
+
+	    FoodItem foodItem = FoodItem.builder()
+	            .name(itemDTO.getName())
+	            .description(itemDTO.getDescription())
+	            .price(itemDTO.getPrice())
+	            .available(itemDTO.getAvailable())
+	            .category(itemDTO.getCategory())
+	            .restaurent(restaurent)
+	            .build();
+
+	    FoodItem savedFoodItem = foodItemRepo.save(foodItem);
+
+	    return mapToResponse(savedFoodItem);
+	}
+
+	private FoodItemDTO mapToResponse(FoodItem foodItem) {
+	    return FoodItemDTO.builder()
+	            .name(foodItem.getName())
+	            .description(foodItem.getDescription())
+	            .price(foodItem.getPrice())
+	            .available(foodItem.isAvailable())
+	            .category(foodItem.getCategory())
+	            .build();
+	}
+
+	
+
+}

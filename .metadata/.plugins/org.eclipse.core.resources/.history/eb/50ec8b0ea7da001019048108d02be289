@@ -1,0 +1,7 @@
+package com.restaurent.service.implementation;
+
+import com.restaurent.service.RestaurentService;
+
+public class RestaurentImplementation implements RestaurentService{
+
+}

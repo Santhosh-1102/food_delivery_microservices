@@ -1,0 +1,30 @@
+package com.order.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.order.Service.OrderService;
+import com.order.dto.OrderDTO;
+import com.order.dto.OrderRequest;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/order")
+@RequiredArgsConstructor
+public class OrderController {
+
+	private final OrderService orderService;
+	
+	@PostMapping("/place/{restaurentId}")
+	public ResponseEntity<OrderDTO> placeOrder(@PathVariable Integer restaurentId,@RequestBody OrderRequest request) {
+		OrderDTO orderDTO = orderService.getMenu(restaurentId, request);
+		return new ResponseEntity<OrderDTO>(orderDTO,HttpStatus.CREATED);
+	}
+	
+}

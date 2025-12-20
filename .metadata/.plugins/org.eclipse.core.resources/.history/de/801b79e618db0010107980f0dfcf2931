@@ -1,0 +1,5 @@
+package com.restaurent.service.implementation;
+
+public class FoodItemImplementation {
+
+}

@@ -1,0 +1,5 @@
+package com.restaurent.exception;
+
+public class RestaurentException {
+
+}

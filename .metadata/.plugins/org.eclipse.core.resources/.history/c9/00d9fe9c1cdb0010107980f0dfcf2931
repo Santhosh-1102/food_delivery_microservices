@@ -1,0 +1,21 @@
+package com.restaurent.service.implementation;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.FoodItemDTO;
+import com.restaurent.model.FoodItem;
+import com.restaurent.service.FoodItemService;
+
+import lombok.RequiredArgsConstructor;
+@Service
+@RequiredArgsConstructor
+public class FoodItemImplementation implements FoodItemService{
+
+	private final FoodItem foodItem;
+	
+	@Override
+	public FoodItemDTO addFoodItemToRestaurent(Integer restaurentId, FoodItemDTO itemDTO) {
+	
+	}
+
+}

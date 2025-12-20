@@ -1,0 +1,19 @@
+package com.order.Service.Implementation;
+
+import org.springframework.stereotype.Service;
+
+import com.order.Client.RestaurentClient;
+import com.order.Service.OrderService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class OrderImplementation implements OrderService{
+
+	private final RestaurentClient restaurentClient;
+	
+	public void validateRestaurant(Long restaurantId) {
+        restaurentClient.getRestaurantById(restaurantId);
+    }
+}

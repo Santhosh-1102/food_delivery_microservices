@@ -1,0 +1,5 @@
+package com.order.Exception;
+
+public class MenuIsNotFoundException {
+
+}

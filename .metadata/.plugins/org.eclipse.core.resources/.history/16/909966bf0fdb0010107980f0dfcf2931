@@ -1,0 +1,71 @@
+package com.restaurent.service.implementation;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.exception.RestaurentException;
+import com.restaurent.model.Restaurent;
+import com.restaurent.repository.RestaurentRepo;
+import com.restaurent.service.RestaurentService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class RestaurentImplementation implements RestaurentService{
+
+	private final RestaurentRepo restaurentRepo;
+	
+	@Override
+	public Restaurent createRestaurent(RestaurentDTO request) {
+		
+		 System.out.println("Name from request = " + request.getName());
+		Restaurent restaurent = Restaurent.builder()
+				.name(request.getName())
+				.location(request.getLocation())
+				.open(request.isOpen())
+				.build();
+		return restaurentRepo.save(restaurent);
+	}
+
+	@Override
+	public List<Restaurent> getAllRestaurents() {
+		return restaurentRepo.findAll();
+	}
+	
+	@Override
+	public Restaurent getRestaurentById(Integer id) {
+		return restaurentRepo
+				.findById(id)
+				.orElseThrow(()->new RestaurentException("Restaurent Id is not present in the db"));
+	}
+
+	@Override
+	public Restaurent updateRestaurent(Integer id, RestaurentDTO restaurentDTO) {
+		Restaurent restaurent = restaurentRepo
+		.findById(id)
+		.orElseThrow(()->new RestaurentException("Restaurent Id is not present in the db"));
+		
+		return restaurentRepo.save(restaurent);
+	}
+
+	@Override
+	public void deleteRestaurent(Integer restaurentId) {
+		Restaurent restaurent = restaurentRepo
+				.findById(restaurentId)
+				.orElseThrow(()->new RestaurentException("Restaurent Id is not present in the db"+ restaurentId));
+		restaurentRepo.delete(restaurent);
+		
+	}
+	
+	@Override
+	public void updateRestaurantStatus(Integer restaurentId, boolean open) {
+		Restaurent restaurent = restaurentRepo
+				.findById(restaurentId)
+				.orElseThrow(()->new RestaurentException("Restaurent Id is not present in the db"+ restaurentId));
+	}
+
+	
+}

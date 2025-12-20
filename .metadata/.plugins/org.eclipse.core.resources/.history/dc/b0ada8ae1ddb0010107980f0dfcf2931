@@ -1,0 +1,10 @@
+package com.restaurent.exception;
+
+class ResourceAlredyExistException extends RuntimeException {
+
+	public ResourceAlredyExistException(String s) {
+		super(s);
+	}
+
+	
+}

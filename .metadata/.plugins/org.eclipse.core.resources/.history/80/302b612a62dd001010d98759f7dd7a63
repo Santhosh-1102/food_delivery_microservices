@@ -1,0 +1,15 @@
+package com.order.Service;
+
+import java.util.List;
+
+import com.order.dto.MenuItemResponse;
+import com.order.dto.OrderDTO;
+import com.order.dto.OrderRequest;
+import com.order.dto.RestaurentDTO;
+
+public interface OrderService {
+	
+	RestaurentDTO validateRestaurant(Integer restaurantId);
+	
+	List<MenuItemResponse> getMenu(Integer restaurentId,OrderRequest request);
+}

@@ -1,0 +1,31 @@
+package com.order.Service.Implementation;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.order.Client.RestaurentClient;
+import com.order.Service.OrderService;
+import com.order.dto.MenuItemResponse;
+import com.order.dto.RestaurentDTO;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class OrderImplementation implements OrderService{
+
+	private final RestaurentClient restaurentClient;
+	
+
+	@Override
+	public RestaurentDTO validateRestaurant(Integer restaurantId) {
+		return restaurentClient.getRestaurantById(restaurantId);
+	}
+
+
+	@Override
+	public List<MenuItemResponse> getMenu(Integer restaurentId) {
+		List<MenuItemResponse> orderMenu = restaurentClient.getMenu(restaurentId);
+	}
+}

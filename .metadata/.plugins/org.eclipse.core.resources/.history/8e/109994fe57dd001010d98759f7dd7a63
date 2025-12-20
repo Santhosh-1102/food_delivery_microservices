@@ -1,0 +1,12 @@
+package com.order.Client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(url = "${restaurant.service.url}",value = "Restaurent-Client")
+public interface RestaurentClient {
+
+	 @GetMapping("/api/restaurent/{id}")
+	    void getRestaurantById(@PathVariable Integer id);
+}

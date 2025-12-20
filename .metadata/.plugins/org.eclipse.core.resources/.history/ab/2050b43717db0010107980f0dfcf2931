@@ -1,0 +1,6 @@
+package com.restaurent.dto;
+
+public class FoodItemDTO {
+
+	 private String name;
+}

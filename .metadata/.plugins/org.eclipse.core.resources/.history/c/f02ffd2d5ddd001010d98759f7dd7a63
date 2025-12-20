@@ -1,0 +1,8 @@
+package com.order.Service;
+
+import com.order.dto.RestaurentDTO;
+
+public interface OrderService {
+	
+	RestaurentDTO validateRestaurant(Integer restaurantId);
+}

@@ -1,0 +1,5 @@
+package com.restaurent.repository;
+
+public interface FoodItemRepo {
+
+}

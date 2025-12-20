@@ -1,0 +1,37 @@
+package com.restaurent.service.implementation;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.model.Restaurent;
+import com.restaurent.repository.RestaurentRepo;
+import com.restaurent.service.RestaurentService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class RestaurentImplementation implements RestaurentService{
+
+	private final RestaurentRepo restaurentRepo;
+	
+	@Override
+	public Restaurent createRestaurent(RestaurentDTO request) {
+		
+		 System.out.println("Name from request = " + request.getName());
+		Restaurent restaurent = Restaurent.builder()
+				.name(request.getName())
+				.location(request.getLocation())
+				.open(request.isOpen())
+				.build();
+		return restaurentRepo.save(restaurent);
+	}
+
+	@Override
+	public List<Restaurent> getAllRestaurents() {
+	return restaurentRepo.findAll();
+	}
+	
+}

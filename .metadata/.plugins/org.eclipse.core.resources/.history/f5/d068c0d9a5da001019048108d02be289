@@ -1,0 +1,12 @@
+package com.restaurent.dto;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Restaurent_dto {
+
+	
+}

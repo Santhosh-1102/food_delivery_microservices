@@ -1,0 +1,12 @@
+package com.restaurent.service;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.Restaurent_dto;
+import com.restaurent.model.Restaurent;
+
+@Service
+public interface RestaurentService {
+
+	Restaurent createRestaurent(Restaurent_dto request);
+}

@@ -1,0 +1,6 @@
+package com.order.Service;
+
+public interface OrderService {
+	
+	void validateRestaurant(Integer restaurantId);
+}

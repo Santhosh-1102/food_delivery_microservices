@@ -1,0 +1,19 @@
+package com.restaurent.service;
+import java.util.List;
+
+import com.restaurent.dto.RestaurentDTO;
+
+public interface RestaurentService {
+
+    RestaurentDTO createRestaurent(RestaurentDTO request);
+
+    List<RestaurentDTO> getAllRestaurents();
+
+    RestaurentDTO getRestaurentById(Integer id);
+
+    RestaurentDTO updateRestaurent(Integer id, RestaurentDTO request);
+
+    void deleteRestaurent(Integer restaurentId);
+
+    void updateRestaurantStatus(Integer restaurentId, boolean open);
+}

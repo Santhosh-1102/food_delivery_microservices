@@ -1,0 +1,24 @@
+package com.order.dto;
+
+import java.time.LocalDateTime;
+
+import com.order.model.OrderStatus;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+public class OrderDTO {
+
+	  private Long orederId;
+
+	    private Long userId;
+
+	    private Long restaurantId;
+
+	    private Double totalAmount;
+
+	    @Enumerated(EnumType.STRING)
+	    private OrderStatus status;
+
+	    private LocalDateTime createdAt;
+}

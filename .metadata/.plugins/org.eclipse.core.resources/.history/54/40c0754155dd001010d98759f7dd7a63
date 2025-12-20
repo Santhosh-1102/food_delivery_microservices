@@ -1,0 +1,3 @@
+spring.application.name=order_service
+restaurent.service.url=http://localhost:2025
+

@@ -1,0 +1,13 @@
+package com.restaurent.service;
+
+import com.restaurent.dto.FoodItemDTO;
+import com.restaurent.model.FoodItem;
+
+public interface FoodItemService {
+	
+	FoodItemDTO addFoodItemToRestaurent(
+	        Integer restaurentId,
+	        FoodItemDTO itemDTO
+	);
+
+}

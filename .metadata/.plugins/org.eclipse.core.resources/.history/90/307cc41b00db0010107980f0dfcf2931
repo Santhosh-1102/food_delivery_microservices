@@ -1,0 +1,5 @@
+package com.restaurent.utils;
+
+public class ApiResponse {
+
+}

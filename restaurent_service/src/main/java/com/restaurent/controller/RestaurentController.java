@@ -1,0 +1,88 @@
+package com.restaurent.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.restaurent.dto.FoodItemDTO;
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.service.FoodItemService;
+import com.restaurent.service.RestaurentService;
+import com.restaurent.utils.ApiResponse;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/restaurent")
+@RequiredArgsConstructor
+public class RestaurentController {
+
+	private final RestaurentService restaurentService;
+	private final FoodItemService foodItemService;
+
+	@PostMapping
+	public ResponseEntity<RestaurentDTO> createRestaurent(@RequestBody RestaurentDTO request) {
+	    return new ResponseEntity<>(
+	            restaurentService.createRestaurent(request),
+	            HttpStatus.CREATED
+	    );
+	}
+
+	
+	@GetMapping("{restaurentId}")
+	public ResponseEntity<RestaurentDTO> getRestaurentById(@PathVariable Integer restaurentId) {
+	    return ResponseEntity.ok(
+	            restaurentService.getRestaurentById(restaurentId)
+	    );
+	}
+
+	
+	@PutMapping("{restaurentId}")
+	public ResponseEntity<RestaurentDTO> updateRestaurent(
+	        @PathVariable Integer restaurentId,
+	        @RequestBody RestaurentDTO request) {
+
+	    return ResponseEntity.ok(
+	            restaurentService.updateRestaurent(restaurentId, request)
+	    );
+	}
+	
+	@DeleteMapping("{restaurentId}")
+	public ResponseEntity<ApiResponse<String>> deleteRestaurent(@PathVariable Integer restaurentId){
+		restaurentService.deleteRestaurent(restaurentId);
+		return ResponseEntity.ok(
+				ApiResponse.success("Restaurent deleted successfully")
+				);			
+	}
+	
+	@PatchMapping("{restuarentId}/status")
+	public ResponseEntity<ApiResponse<String>> updateRestaurentStatus(
+											@PathVariable Integer restuarentId
+											,@RequestParam boolean open){
+		
+		restaurentService.updateRestaurantStatus(restuarentId, open);
+		
+		return ResponseEntity.ok(
+				ApiResponse.success("Restaurent Status got updated")
+				);	
+		
+	}
+	
+	@GetMapping("/{restaurentId}/menu")
+	public ResponseEntity<ApiResponse<List<FoodItemDTO>>> getMenu(@PathVariable Integer restaurentId){
+		List<FoodItemDTO> menu = foodItemService.getMenu(restaurentId);
+		return ResponseEntity.ok(ApiResponse.success(menu));
+	}
+}
+

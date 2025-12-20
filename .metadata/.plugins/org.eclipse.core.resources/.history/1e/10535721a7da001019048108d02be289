@@ -1,0 +1,20 @@
+package com.restaurent.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Restaurent_dto {
+
+	private String name;
+    private String location;
+    private boolean open;
+
+}

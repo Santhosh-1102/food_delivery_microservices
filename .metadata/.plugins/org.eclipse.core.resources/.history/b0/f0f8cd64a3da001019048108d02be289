@@ -1,0 +1,45 @@
+package com.restaurent.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
+@EqualsAndHashCode(of="id")
+@Table(name = "resturents")
+public class Restaurent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String location;
+
+    @Column(nullable = false)
+    private Boolean open;
+
+    @OneToMany(
+        mappedBy = "restaurant",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<FoodItem> foodItems;
+
+}
+

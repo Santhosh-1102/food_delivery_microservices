@@ -1,0 +1,28 @@
+package com.restaurent.service.implementation;
+
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.model.Restaurent;
+import com.restaurent.repository.RestaurentRepo;
+import com.restaurent.service.RestaurentService;
+
+public class RestaurentImplementation implements RestaurentService{
+
+	private final RestaurentRepo restaurentRepo;
+	public RestaurentImplementation(RestaurentRepo restaurentRepo) {
+		super();
+		this.restaurentRepo = restaurentRepo;
+	}
+
+
+
+	@Override
+	public Restaurent createRestaurent(RestaurentDTO request) {
+		
+		Restaurent.builder()
+				.name(request.getName())
+				.location(request.getLocation())
+				.open(request.isOpen())
+				.build();
+	}
+	
+}

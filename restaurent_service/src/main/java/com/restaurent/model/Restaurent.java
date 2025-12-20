@@ -1,0 +1,37 @@
+package com.restaurent.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "restaurants")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "foodItems")
+@EqualsAndHashCode(of = "id")
+public class Restaurent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String location;
+
+    @Column(nullable = false)
+    private boolean open;
+
+    @OneToMany(
+        mappedBy = "restaurent",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<FoodItem> foodItems;
+}

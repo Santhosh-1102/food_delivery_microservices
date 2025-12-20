@@ -1,0 +1,103 @@
+package com.restaurent.service.implementation;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.restaurent.dto.RestaurentDTO;
+import com.restaurent.exception.RestaurentException;
+import com.restaurent.model.Restaurent;
+import com.restaurent.repository.RestaurentRepo;
+import com.restaurent.service.RestaurentService;
+import com.restaurent.utils.FoodItemMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class RestaurentImplementation implements RestaurentService {
+
+    private final RestaurentRepo restaurentRepo;
+    private final FoodItemMapper foodItemMapper;
+
+    @Override
+    public RestaurentDTO createRestaurent(RestaurentDTO request) {
+
+        Restaurent restaurent = Restaurent.builder()
+                .name(request.getName())
+                .location(request.getLocation())
+                .open(request.getOpen())
+                .build();
+
+        Restaurent saved = restaurentRepo.save(restaurent);
+        return mapToResponse(saved);
+    }
+
+    @Override
+    public List<RestaurentDTO> getAllRestaurents() {
+        return restaurentRepo.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    public RestaurentDTO getRestaurentById(Integer id) {
+        Restaurent restaurent = restaurentRepo.findById(id)
+                .orElseThrow(() ->
+                        new RestaurentException("Restaurent Id is not present in the db"));
+
+        return mapToResponse(restaurent);
+    }
+
+    @Override
+    public RestaurentDTO updateRestaurent(Integer id, RestaurentDTO request) {
+
+        Restaurent restaurent = restaurentRepo.findById(id)
+                .orElseThrow(() ->
+                        new RestaurentException("Restaurent Id is not present in the db"));
+
+        if (request.getName() != null)
+            restaurent.setName(request.getName());
+
+        if (request.getLocation() != null)
+            restaurent.setLocation(request.getLocation());
+
+        if (request.getOpen() != null)
+            restaurent.setOpen(request.getOpen());
+
+        Restaurent updated = restaurentRepo.save(restaurent);
+        return mapToResponse(updated);
+    }
+
+    @Override
+    public void deleteRestaurent(Integer restaurentId) {
+        Restaurent restaurent = restaurentRepo.findById(restaurentId)
+                .orElseThrow(() ->
+                        new RestaurentException("Restaurent Id is not present in the db " + restaurentId));
+        restaurentRepo.delete(restaurent);
+    }
+
+    @Override
+    public void updateRestaurantStatus(Integer restaurentId, boolean open) {
+        Restaurent restaurent = restaurentRepo.findById(restaurentId)
+                .orElseThrow(() ->
+                        new RestaurentException("Restaurent Id is not present in the db " + restaurentId));
+        restaurent.setOpen(open);
+        restaurentRepo.save(restaurent);
+    }
+
+    private RestaurentDTO mapToResponse(Restaurent restaurent) {
+        return RestaurentDTO.builder()
+                .id(restaurent.getId())
+                .name(restaurent.getName())
+                .location(restaurent.getLocation())
+                .open(restaurent.isOpen())
+                .foodItems(
+                        restaurent.getFoodItems()
+                                .stream()
+                                .map(foodItemMapper::toDto)
+                                .toList()
+                )
+                .build();
+    }
+}
