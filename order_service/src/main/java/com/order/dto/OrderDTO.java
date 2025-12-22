@@ -1,11 +1,7 @@
 package com.order.dto;
 
-import java.time.LocalDateTime;
-
 import com.order.model.OrderStatus;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +21,6 @@ public class OrderDTO {
 
 	    private Double totalAmount;
 
-	    @Enumerated(EnumType.STRING)
 	    private OrderStatus status;
 
 //	    private LocalDateTime localTime;

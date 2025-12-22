@@ -1,5 +1,6 @@
 package com.order.Service.Implementation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,17 +8,23 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.order.Client.RestaurentClient;
+import com.order.Exception.InvalidOrderStatusException;
 import com.order.Exception.MenuIsNotFoundException;
+import com.order.Exception.OrderIdIsNotFoundException;
 import com.order.Service.OrderService;
 import com.order.Utils.ApiResponse;
+import com.order.Utils.OrderStatusValidator;
 import com.order.dto.MenuItemResponse;
 import com.order.dto.OrderDTO;
+import com.order.dto.OrderHistoryDTO;
 import com.order.dto.OrderItemRequest;
 import com.order.dto.OrderRequest;
 import com.order.dto.RestaurentDTO;
 import com.order.model.Order;
 import com.order.model.OrderStatus;
+import com.order.model.OrderStatusHistory;
 import com.order.repository.OrderRepo;
+import com.order.repository.OrderStatusHistroryRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +35,10 @@ public class OrderImplementation implements OrderService{
 	private final RestaurentClient restaurentClient;
 	
 	private final OrderRepo orderRepo;
+	
+	private final OrderStatusValidator orderStatusValidator;
+	
+	private final OrderStatusHistroryRepo history;
 	
 
 	@Override
@@ -80,4 +91,51 @@ public class OrderImplementation implements OrderService{
     		   order.getStatus()
     		);
     }
+
+
+	@Override
+	public OrderDTO getOrderById(Integer orderId) {
+		Order order = orderRepo.findById(orderId)
+				.orElseThrow(()->new OrderIdIsNotFoundException("order id is not found please place the order"));
+		return mapToResponse(order);
+	}
+
+
+	@Override
+	public Order updateOrderStatus(Integer orderId, OrderStatus status) {
+		Order order = orderRepo.findById(orderId)
+				.orElseThrow(()->new OrderIdIsNotFoundException("order is not found"+orderId));
+		if(!orderStatusValidator.isValid(order.getStatus(),status)) {
+			System.out.println("CURRENT = " + order.getStatus());
+			System.out.println("NEXT = " + status);
+			throw new InvalidOrderStatusException(
+					"Invalid Status Change From "+order.getStatus() +" to "+status
+					);
+		}
+		
+		OrderStatusHistory orderHistory=new OrderStatusHistory();
+		orderHistory.setOrderId(orderId);
+		orderHistory.setStatus(status);
+		orderHistory.setChangedAt(LocalDateTime.now());
+		
+		history.save(orderHistory);
+
+		order.setStatus(status);
+		order.setUpdatedAt(LocalDateTime.now());
+		
+		return orderRepo.save(order);
+	}
+
+
+	@Override
+	public List<OrderHistoryDTO> getOrderStatusHistory(Integer orderId) {
+		return history.findByOrderIdOrderByChangedAtAsc(orderId)
+				.stream().map(h->new OrderHistoryDTO(
+						h.getStatus(),
+						h.getChangedAt()
+						))
+				.toList();
+	}
+	
+	
 }

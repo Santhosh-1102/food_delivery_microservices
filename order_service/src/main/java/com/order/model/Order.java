@@ -37,5 +37,6 @@ public class Order {
     private OrderStatus status;
 
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
 
